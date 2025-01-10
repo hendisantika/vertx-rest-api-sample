@@ -27,4 +27,12 @@ public class ResponseUtils {
       .putHeader(CONTENT_TYPE_HEADER, APPLICATION_JSON)
       .end(Json.encodePrettily(response));
   }
+
+  public static void buildCreatedResponse(RoutingContext rc,
+                                          Object response) {
+    rc.response()
+      .setStatusCode(201)
+      .putHeader(CONTENT_TYPE_HEADER, APPLICATION_JSON)
+      .end(Json.encodePrettily(response));
+  }
 }

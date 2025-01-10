@@ -6,13 +6,16 @@ import id.my.hendisantika.vertx_rest_api_sample.util.LogUtils;
 import io.vertx.core.Future;
 import io.vertx.core.impl.logging.Logger;
 import io.vertx.core.impl.logging.LoggerFactory;
+import io.vertx.sqlclient.RowIterator;
 import io.vertx.sqlclient.SqlConnection;
 import io.vertx.sqlclient.templates.SqlTemplate;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 /**
  * Created by IntelliJ IDEA.
@@ -56,5 +59,24 @@ public class BookRepository {
       })
       .onSuccess(success -> LOGGER.info(LogUtils.REGULAR_CALL_SUCCESS_MESSAGE.buildMessage("Read all books", SQL_SELECT_ALL)))
       .onFailure(throwable -> LOGGER.error(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Read all books", throwable.getMessage())));
+  }
+
+  public Future<Book> selectById(SqlConnection connection,
+                                 int id) {
+    return SqlTemplate
+      .forQuery(connection, SQL_SELECT_BY_ID)
+      .mapTo(Book.class)
+      .execute(Collections.singletonMap("id", id))
+      .map(rowSet -> {
+        final RowIterator<Book> iterator = rowSet.iterator();
+
+        if (iterator.hasNext()) {
+          return iterator.next();
+        } else {
+          throw new NoSuchElementException(LogUtils.NO_BOOK_WITH_ID_MESSAGE.buildMessage(id));
+        }
+      })
+      .onSuccess(success -> LOGGER.info(LogUtils.REGULAR_CALL_SUCCESS_MESSAGE.buildMessage("Read book by id", SQL_SELECT_BY_ID)))
+      .onFailure(throwable -> LOGGER.error(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Read book by id", throwable.getMessage())));
   }
 }

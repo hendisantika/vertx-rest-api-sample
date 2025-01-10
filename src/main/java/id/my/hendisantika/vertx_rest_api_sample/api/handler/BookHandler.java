@@ -1,6 +1,7 @@
 package id.my.hendisantika.vertx_rest_api_sample.api.handler;
 
 import id.my.hendisantika.vertx_rest_api_sample.util.ResponseUtils;
+import io.vertx.core.Future;
 import io.vertx.ext.web.RoutingContext;
 
 import java.awt.print.Book;
@@ -57,6 +58,14 @@ public class BookHandler {
 
     return bookService.update(Integer.parseInt(id), book)
       .onSuccess(success -> ResponseUtils.buildOkResponse(rc, success))
+      .onFailure(throwable -> ResponseUtils.buildErrorResponse(rc, throwable));
+  }
+
+  public Future<Void> delete(RoutingContext rc) {
+    final String id = rc.pathParam(ID_PARAMETER);
+
+    return bookService.delete(Integer.parseInt(id))
+      .onSuccess(success -> ResponseUtils.buildNoContentResponse(rc))
       .onFailure(throwable -> ResponseUtils.buildErrorResponse(rc, throwable));
   }
 }

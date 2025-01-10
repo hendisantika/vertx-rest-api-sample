@@ -19,7 +19,7 @@
     <junit-jupiter.version>5.7.0</junit-jupiter.version>
     <jackson.version>2.18.2</jackson.version>
     <flyway.version>7.5.0</flyway.version>
-    <postgresql.version>42.2.18</postgresql.version>
+    <postgresql.version>42.7.4</postgresql.version>
     <vertx.version>4.5.11</vertx.version>
     <junit-jupiter.version>5.11.4</junit-jupiter.version>
 

@@ -35,4 +35,11 @@ public class ResponseUtils {
       .putHeader(CONTENT_TYPE_HEADER, APPLICATION_JSON)
       .end(Json.encodePrettily(response));
   }
+
+  public static void buildNoContentResponse(RoutingContext rc) {
+    rc.response()
+      .setStatusCode(204)
+      .end();
+  }
+
 }

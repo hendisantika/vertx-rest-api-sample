@@ -1,5 +1,8 @@
 package id.my.hendisantika.vertx_rest_api_sample.api.handler;
 
+import id.my.hendisantika.vertx_rest_api_sample.util.ResponseUtils;
+import io.vertx.ext.web.RoutingContext;
+
 /**
  * Created by IntelliJ IDEA.
  * Project : vertx-rest-api-sample
@@ -20,4 +23,14 @@ public class BookHandler {
   public BookHandler(BookService bookService) {
     this.bookService = bookService;
   }
+
+  public Future<BookGetAllResponse> readAll(RoutingContext rc) {
+    final String page = rc.queryParams().get(PAGE_PARAMETER);
+    final String limit = rc.queryParams().get(LIMIT_PARAMETER);
+
+    return bookService.readAll(page, limit)
+      .onSuccess(success -> ResponseUtils.buildOkResponse(rc, success))
+      .onFailure(throwable -> ResponseUtils.buildErrorResponse(rc, throwable));
+  }
+
 }

@@ -57,4 +57,14 @@ public class BookService {
       .onSuccess(success -> LOGGER.info(LogUtils.REGULAR_CALL_SUCCESS_MESSAGE.buildMessage("Read all books", success.getBooks())))
       .onFailure(throwable -> LOGGER.error(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Read all books", throwable.getMessage())));
   }
+
+  public Future<BookGetByIdResponse> readOne(int id) {
+    return dbClient.withTransaction(
+        connection -> {
+          return bookRepository.selectById(connection, id)
+            .map(BookGetByIdResponse::new);
+        })
+      .onSuccess(success -> LOGGER.info(LogUtils.REGULAR_CALL_SUCCESS_MESSAGE.buildMessage("Read one book", success)))
+      .onFailure(throwable -> LOGGER.error(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Read one book", throwable.getMessage())));
+  }
 }

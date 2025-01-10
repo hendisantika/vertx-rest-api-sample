@@ -33,4 +33,12 @@ public class BookHandler {
       .onFailure(throwable -> ResponseUtils.buildErrorResponse(rc, throwable));
   }
 
+  public Future<BookGetByIdResponse> readOne(RoutingContext rc) {
+    final String id = rc.pathParam(ID_PARAMETER);
+
+    return bookService.readOne(Integer.parseInt(id))
+      .onSuccess(success -> ResponseUtils.buildOkResponse(rc, success))
+      .onFailure(throwable -> ResponseUtils.buildErrorResponse(rc, throwable));
+  }
+
 }

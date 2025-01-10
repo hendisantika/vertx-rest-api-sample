@@ -50,4 +50,13 @@ public class BookHandler {
       .onSuccess(success -> ResponseUtils.buildCreatedResponse(rc, success))
       .onFailure(throwable -> ResponseUtils.buildErrorResponse(rc, throwable));
   }
+
+  public Future<BookGetByIdResponse> update(RoutingContext rc) {
+    final String id = rc.pathParam(ID_PARAMETER);
+    final Book book = rc.getBodyAsJson().mapTo(Book.class);
+
+    return bookService.update(Integer.parseInt(id), book)
+      .onSuccess(success -> ResponseUtils.buildOkResponse(rc, success))
+      .onFailure(throwable -> ResponseUtils.buildErrorResponse(rc, throwable));
+  }
 }

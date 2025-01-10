@@ -21,7 +21,7 @@
     <flyway.version>7.5.0</flyway.version>
     <postgresql.version>42.2.18</postgresql.version>
     <vertx.version>4.5.11</vertx.version>
-    <junit-jupiter.version>5.9.1</junit-jupiter.version>
+    <junit-jupiter.version>5.11.4</junit-jupiter.version>
 
     <main.verticle>id.my.hendisantika.vertx_rest_api_sample.verticle.MainVerticle</main.verticle>
     <launcher.class>io.vertx.core.Launcher</launcher.class>

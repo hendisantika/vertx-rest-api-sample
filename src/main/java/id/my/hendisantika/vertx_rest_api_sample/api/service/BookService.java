@@ -20,4 +20,10 @@ public class BookService {
 
   private final PgPool dbClient;
   private final BookRepository bookRepository;
+
+  public BookService(PgPool dbClient,
+                     BookRepository bookRepository) {
+    this.dbClient = dbClient;
+    this.bookRepository = bookRepository;
+  }
 }

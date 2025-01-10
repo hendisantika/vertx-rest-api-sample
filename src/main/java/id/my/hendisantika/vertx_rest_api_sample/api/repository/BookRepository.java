@@ -8,6 +8,7 @@ import io.vertx.core.impl.logging.Logger;
 import io.vertx.core.impl.logging.LoggerFactory;
 import io.vertx.sqlclient.RowIterator;
 import io.vertx.sqlclient.SqlConnection;
+import io.vertx.sqlclient.templates.RowMapper;
 import io.vertx.sqlclient.templates.SqlTemplate;
 
 import java.util.ArrayList;
@@ -132,5 +133,17 @@ public class BookRepository {
           throw new NoSuchElementException(LogUtils.NO_BOOK_WITH_ID_MESSAGE.buildMessage(id));
         }
       });
+  }
+
+  public Future<Integer> count(SqlConnection connection) {
+    final RowMapper<Integer> ROW_MAPPER = row -> row.getInteger("total");
+
+    return SqlTemplate
+      .forQuery(connection, SQL_COUNT)
+      .mapTo(ROW_MAPPER)
+      .execute(Collections.emptyMap())
+      .map(rowSet -> rowSet.iterator().next())
+      .onSuccess(success -> LOGGER.info(LogUtils.REGULAR_CALL_SUCCESS_MESSAGE.buildMessage("Count books", SQL_COUNT)))
+      .onFailure(throwable -> LOGGER.error(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Count book", throwable.getMessage())));
   }
 }

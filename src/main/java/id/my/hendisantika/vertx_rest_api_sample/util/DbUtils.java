@@ -4,6 +4,7 @@ import io.vertx.core.Vertx;
 import io.vertx.pgclient.PgConnectOptions;
 import io.vertx.pgclient.PgPool;
 
+import java.lang.module.Configuration;
 import java.util.Properties;
 
 /**
@@ -39,6 +40,14 @@ public class DbUtils {
     final PoolOptions poolOptions = new PoolOptions().setMaxSize(ApplicationUtils.numberOfAvailableCores());
 
     return PgPool.pool(vertx, connectOptions, poolOptions);
+  }
+
+  public static Configuration buildMigrationsConfiguration() {
+    final Properties properties = ConfigUtils.getInstance().getProperties();
+
+    final String url = "jdbc:postgresql://" + properties.getProperty(HOST_CONFIG) + ":" + properties.getProperty(PORT_CONFIG) + "/" + properties.getProperty(DATABASE_CONFIG);
+
+    return new FluentConfiguration().dataSource(url, properties.getProperty(USERNAME_CONFIG), properties.getProperty(PASSWORD_CONFIG));
   }
 
 }

@@ -1,7 +1,10 @@
 package id.my.hendisantika.vertx_rest_api_sample.util;
 
 import io.vertx.core.json.Json;
+import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
+
+import java.util.NoSuchElementException;
 
 /**
  * Created by IntelliJ IDEA.
@@ -42,4 +45,28 @@ public class ResponseUtils {
       .end();
   }
 
+  public static void buildErrorResponse(RoutingContext rc,
+                                        Throwable throwable) {
+    final int status;
+    final String message;
+
+    if (throwable instanceof IllegalArgumentException || throwable instanceof IllegalStateException || throwable instanceof NullPointerException) {
+      // Bad Request
+      status = 400;
+      message = throwable.getMessage();
+    } else if (throwable instanceof NoSuchElementException) {
+      // Not Found
+      status = 404;
+      message = throwable.getMessage();
+    } else {
+      // Internal Server Error
+      status = 500;
+      message = "Internal Server Error";
+    }
+
+    rc.response()
+      .setStatusCode(status)
+      .putHeader(CONTENT_TYPE_HEADER, APPLICATION_JSON)
+      .end(new JsonObject().put("error", message).encodePrettily());
+  }
 }

@@ -117,4 +117,20 @@ public class BookRepository {
       .onSuccess(success -> LOGGER.info(LogUtils.REGULAR_CALL_SUCCESS_MESSAGE.buildMessage("Update book", SQL_UPDATE)))
       .onFailure(throwable -> LOGGER.error(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Update book", throwable.getMessage())));
   }
+
+  public Future<Void> delete(SqlConnection connection,
+                             int id) {
+    return SqlTemplate
+      .forUpdate(connection, SQL_DELETE)
+      .execute(Collections.singletonMap("id", id))
+      .flatMap(rowSet -> {
+        if (rowSet.rowCount() > 0) {
+          LOGGER.info(LogUtils.REGULAR_CALL_SUCCESS_MESSAGE.buildMessage("Delete book", SQL_DELETE));
+          return Future.succeededFuture();
+        } else {
+          LOGGER.error(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Delete book", LogUtils.NO_BOOK_WITH_ID_MESSAGE.buildMessage(id)));
+          throw new NoSuchElementException(LogUtils.NO_BOOK_WITH_ID_MESSAGE.buildMessage(id));
+        }
+      });
+  }
 }

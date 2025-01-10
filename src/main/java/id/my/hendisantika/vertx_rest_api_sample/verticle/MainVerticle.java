@@ -1,5 +1,6 @@
 package id.my.hendisantika.vertx_rest_api_sample.verticle;
 
+import id.my.hendisantika.vertx_rest_api_sample.util.ApplicationUtils;
 import id.my.hendisantika.vertx_rest_api_sample.util.LogUtils;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.DeploymentOptions;
@@ -31,5 +32,10 @@ public class MainVerticle extends AbstractVerticle {
 
     return vertx.deployVerticle(MigrationVerticle.class.getName(), options)
       .flatMap(vertx::undeploy);
+  }
+
+  private Future<String> deployApiVerticle(Vertx vertx) {
+    return vertx.deployVerticle(ApiVerticle.class.getName(),
+      new DeploymentOptions().setInstances(ApplicationUtils.numberOfAvailableCores()));
   }
 }

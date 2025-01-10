@@ -3,8 +3,8 @@ package id.my.hendisantika.vertx_rest_api_sample.verticle;
 import id.my.hendisantika.vertx_rest_api_sample.util.DbUtils;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
-
-import java.lang.module.Configuration;
+import org.flywaydb.core.Flyway;
+import org.flywaydb.core.api.configuration.Configuration;
 
 /**
  * Created by IntelliJ IDEA.

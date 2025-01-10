@@ -3,8 +3,10 @@ package id.my.hendisantika.vertx_rest_api_sample.util;
 import io.vertx.core.Vertx;
 import io.vertx.pgclient.PgConnectOptions;
 import io.vertx.pgclient.PgPool;
+import io.vertx.sqlclient.PoolOptions;
+import org.flywaydb.core.api.configuration.Configuration;
+import org.flywaydb.core.api.configuration.FluentConfiguration;
 
-import java.lang.module.Configuration;
 import java.util.Properties;
 
 /**

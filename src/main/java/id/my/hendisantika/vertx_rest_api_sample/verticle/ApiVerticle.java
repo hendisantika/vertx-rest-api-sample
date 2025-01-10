@@ -5,9 +5,12 @@ import id.my.hendisantika.vertx_rest_api_sample.api.handler.ErrorHandler;
 import id.my.hendisantika.vertx_rest_api_sample.api.repository.BookRepository;
 import id.my.hendisantika.vertx_rest_api_sample.api.router.BookRouter;
 import id.my.hendisantika.vertx_rest_api_sample.api.service.BookService;
+import id.my.hendisantika.vertx_rest_api_sample.util.ConfigUtils;
 import id.my.hendisantika.vertx_rest_api_sample.util.DbUtils;
+import id.my.hendisantika.vertx_rest_api_sample.util.LogUtils;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
+import io.vertx.core.Vertx;
 import io.vertx.core.impl.logging.Logger;
 import io.vertx.core.impl.logging.LoggerFactory;
 import io.vertx.ext.web.Router;
@@ -41,5 +44,23 @@ public class ApiVerticle extends AbstractVerticle {
     bookRouter.setRouter(router);
 
     buildHttpServer(vertx, promise, router);
+  }
+
+  private void buildHttpServer(Vertx vertx,
+                               Promise<Void> promise,
+                               Router router) {
+    int port = ConfigUtils.getInstance().getApplicationUtils().getServerPort();
+
+    vertx.createHttpServer()
+      .requestHandler(router)
+      .listen(port, http -> {
+        if (http.succeeded()) {
+          promise.complete();
+          LOGGER.info(LogUtils.RUN_HTTP_SERVER_SUCCESS_MESSAGE.buildMessage(port));
+        } else {
+          promise.fail(http.cause());
+          LOGGER.info(LogUtils.RUN_HTTP_SERVER_ERROR_MESSAGE.buildMessage());
+        }
+      });
   }
 }

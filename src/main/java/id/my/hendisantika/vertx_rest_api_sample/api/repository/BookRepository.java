@@ -1,8 +1,18 @@
 package id.my.hendisantika.vertx_rest_api_sample.api.repository;
 
 
+import id.my.hendisantika.vertx_rest_api_sample.api.model.Book;
+import id.my.hendisantika.vertx_rest_api_sample.util.LogUtils;
+import io.vertx.core.Future;
 import io.vertx.core.impl.logging.Logger;
 import io.vertx.core.impl.logging.LoggerFactory;
+import io.vertx.sqlclient.SqlConnection;
+import io.vertx.sqlclient.templates.SqlTemplate;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA.
@@ -26,5 +36,25 @@ public class BookRepository {
   private static final String SQL_COUNT = "SELECT COUNT(*) AS total FROM books";
 
   public BookRepository() {
+  }
+
+  public Future<List<Book>> selectAll(SqlConnection connection,
+                                      int limit,
+                                      int offset) {
+    Map<String, Object> params = new HashMap<>();
+    params.put("limit", limit);
+    params.put("offset", offset);
+    return SqlTemplate
+      .forQuery(connection, SQL_SELECT_ALL)
+      .mapTo(Book.class)
+      .execute(params)
+      .map(rowSet -> {
+        final List<Book> books = new ArrayList<>();
+        rowSet.forEach(books::add);
+
+        return books;
+      })
+      .onSuccess(success -> LOGGER.info(LogUtils.REGULAR_CALL_SUCCESS_MESSAGE.buildMessage("Read all books", SQL_SELECT_ALL)))
+      .onFailure(throwable -> LOGGER.error(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Read all books", throwable.getMessage())));
   }
 }

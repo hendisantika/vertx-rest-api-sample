@@ -3,6 +3,8 @@ package id.my.hendisantika.vertx_rest_api_sample.api.handler;
 import id.my.hendisantika.vertx_rest_api_sample.util.ResponseUtils;
 import io.vertx.ext.web.RoutingContext;
 
+import java.awt.print.Book;
+
 /**
  * Created by IntelliJ IDEA.
  * Project : vertx-rest-api-sample
@@ -41,4 +43,11 @@ public class BookHandler {
       .onFailure(throwable -> ResponseUtils.buildErrorResponse(rc, throwable));
   }
 
+  public Future<BookGetByIdResponse> create(RoutingContext rc) {
+    final Book book = rc.getBodyAsJson().mapTo(Book.class);
+
+    return bookService.create(book)
+      .onSuccess(success -> ResponseUtils.buildCreatedResponse(rc, success))
+      .onFailure(throwable -> ResponseUtils.buildErrorResponse(rc, throwable));
+  }
 }

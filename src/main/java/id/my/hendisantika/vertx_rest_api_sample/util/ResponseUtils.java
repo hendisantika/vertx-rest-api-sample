@@ -1,5 +1,8 @@
 package id.my.hendisantika.vertx_rest_api_sample.util;
 
+import io.vertx.core.json.Json;
+import io.vertx.ext.web.RoutingContext;
+
 /**
  * Created by IntelliJ IDEA.
  * Project : vertx-rest-api-sample
@@ -15,6 +18,13 @@ public class ResponseUtils {
   private static final String APPLICATION_JSON = "application/json";
 
   private ResponseUtils() {
+  }
 
+  public static void buildOkResponse(RoutingContext rc,
+                                     Object response) {
+    rc.response()
+      .setStatusCode(200)
+      .putHeader(CONTENT_TYPE_HEADER, APPLICATION_JSON)
+      .end(Json.encodePrettily(response));
   }
 }

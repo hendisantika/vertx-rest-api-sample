@@ -1,5 +1,6 @@
 package id.my.hendisantika.vertx_rest_api_sample;
 
+import id.my.hendisantika.vertx_rest_api_sample.verticle.MainVerticle;
 import io.vertx.core.Vertx;
 
 /**

@@ -1,6 +1,5 @@
 package id.my.hendisantika.vertx_rest_api_sample.api.repository;
 
-
 import id.my.hendisantika.vertx_rest_api_sample.api.model.Book;
 import id.my.hendisantika.vertx_rest_api_sample.util.LogUtils;
 import io.vertx.core.Future;

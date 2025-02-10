@@ -20,7 +20,7 @@
     <jackson.version>2.18.2</jackson.version>
     <flyway.version>11.3.1</flyway.version>
     <postgresql.version>42.7.5</postgresql.version>
-    <vertx.version>4.5.12</vertx.version>
+    <vertx.version>4.5.13</vertx.version>
     <junit-jupiter.version>5.11.4</junit-jupiter.version>
     <lombok.version>1.18.36</lombok.version>
     <java.version>23</java.version>

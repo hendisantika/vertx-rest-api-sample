@@ -17,7 +17,7 @@
     <exec-maven-plugin.version>3.5.1</exec-maven-plugin.version>
     <jacoco-plugin.version>0.8.13</jacoco-plugin.version>
     <junit-jupiter.version>5.7.0</junit-jupiter.version>
-    <jackson.version>2.19.2</jackson.version>
+    <jackson.version>2.20.0</jackson.version>
     <flyway.version>11.11.2</flyway.version>
     <postgresql.version>42.7.7</postgresql.version>
     <vertx.version>5.0.3</vertx.version>

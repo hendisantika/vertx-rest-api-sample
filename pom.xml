@@ -22,7 +22,7 @@
     <postgresql.version>42.7.7</postgresql.version>
     <vertx.version>5.0.4</vertx.version>
     <junit-jupiter.version>5.13.4</junit-jupiter.version>
-    <lombok.version>1.18.38</lombok.version>
+    <lombok.version>1.18.40</lombok.version>
     <java.version>23</java.version>
     <main.verticle>id.my.hendisantika.vertx_rest_api_sample.verticle.MainVerticle</main.verticle>
     <launcher.class>io.vertx.core.Launcher</launcher.class>

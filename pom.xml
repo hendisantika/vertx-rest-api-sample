@@ -18,7 +18,7 @@
     <jacoco-plugin.version>0.8.15</jacoco-plugin.version>
     <junit-jupiter.version>5.7.0</junit-jupiter.version>
     <jackson.version>2.22</jackson.version>
-    <flyway.version>12.10.0</flyway.version>
+    <flyway.version>12.11.0</flyway.version>
     <postgresql.version>42.7.13</postgresql.version>
     <vertx.version>5.1.4</vertx.version>
     <junit-jupiter.version>6.1.1</junit-jupiter.version>

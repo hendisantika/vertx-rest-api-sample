@@ -24,7 +24,7 @@
     <lombok.version>1.18.48</lombok.version>
     <java.version>23</java.version>
     <main.verticle>id.my.hendisantika.vertx_rest_api_sample.verticle.MainVerticle</main.verticle>
-    <launcher.class>io.vertx.core.Launcher</launcher.class>
+    <launcher.class>id.my.hendisantika.vertx_rest_api_sample.Main</launcher.class>
   </properties>
 
   <dependencyManagement>
@@ -193,10 +193,6 @@
         <version>${exec-maven-plugin.version}</version>
         <configuration>
           <mainClass>${launcher.class}</mainClass>
-          <arguments>
-            <argument>run</argument>
-            <argument>${main.verticle}</argument>
-          </arguments>
         </configuration>
       </plugin>
       <!-- https://mvnrepository.com/artifact/org.jacoco/jacoco-maven-plugin -->

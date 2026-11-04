@@ -3,8 +3,6 @@ package id.my.hendisantika.vertx_rest_api_sample.api.repository;
 import id.my.hendisantika.vertx_rest_api_sample.api.model.Book;
 import id.my.hendisantika.vertx_rest_api_sample.util.LogUtils;
 import io.vertx.core.Future;
-import io.vertx.core.impl.logging.Logger;
-import io.vertx.core.impl.logging.LoggerFactory;
 import io.vertx.sqlclient.RowIterator;
 import io.vertx.sqlclient.SqlConnection;
 import io.vertx.sqlclient.templates.RowMapper;
@@ -17,6 +15,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+import java.util.logging.Logger;
+
 /**
  * Created by IntelliJ IDEA.
  * Project : vertx-rest-api-sample
@@ -28,7 +28,7 @@ import java.util.NoSuchElementException;
  * To change this template use File | Settings | File Templates.
  */
 public class BookRepository {
-  private static final Logger LOGGER = LoggerFactory.getLogger(BookRepository.class);
+  private static final Logger LOGGER = Logger.getLogger(BookRepository.class.getName());
 
   private static final String SQL_SELECT_ALL = "SELECT * FROM books LIMIT #{limit} OFFSET #{offset}";
   private static final String SQL_SELECT_BY_ID = "SELECT * FROM books WHERE id = #{id}";
@@ -58,7 +58,7 @@ public class BookRepository {
         return books;
       })
       .onSuccess(success -> LOGGER.info(LogUtils.REGULAR_CALL_SUCCESS_MESSAGE.buildMessage("Read all books", SQL_SELECT_ALL)))
-      .onFailure(throwable -> LOGGER.error(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Read all books", throwable.getMessage())));
+      .onFailure(throwable -> LOGGER.severe(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Read all books", throwable.getMessage())));
   }
 
   public Future<Book> selectById(SqlConnection connection,
@@ -77,7 +77,7 @@ public class BookRepository {
         }
       })
       .onSuccess(success -> LOGGER.info(LogUtils.REGULAR_CALL_SUCCESS_MESSAGE.buildMessage("Read book by id", SQL_SELECT_BY_ID)))
-      .onFailure(throwable -> LOGGER.error(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Read book by id", throwable.getMessage())));
+      .onFailure(throwable -> LOGGER.severe(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Read book by id", throwable.getMessage())));
   }
 
   public Future<Book> insert(SqlConnection connection,
@@ -98,7 +98,7 @@ public class BookRepository {
         }
       })
       .onSuccess(success -> LOGGER.info(LogUtils.REGULAR_CALL_SUCCESS_MESSAGE.buildMessage("Insert book", SQL_INSERT)))
-      .onFailure(throwable -> LOGGER.error(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Insert book", throwable.getMessage())));
+      .onFailure(throwable -> LOGGER.severe(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Insert book", throwable.getMessage())));
   }
 
   public Future<Book> update(SqlConnection connection,
@@ -115,7 +115,7 @@ public class BookRepository {
         }
       })
       .onSuccess(success -> LOGGER.info(LogUtils.REGULAR_CALL_SUCCESS_MESSAGE.buildMessage("Update book", SQL_UPDATE)))
-      .onFailure(throwable -> LOGGER.error(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Update book", throwable.getMessage())));
+      .onFailure(throwable -> LOGGER.severe(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Update book", throwable.getMessage())));
   }
 
   public Future<Void> delete(SqlConnection connection,
@@ -128,7 +128,7 @@ public class BookRepository {
           LOGGER.info(LogUtils.REGULAR_CALL_SUCCESS_MESSAGE.buildMessage("Delete book", SQL_DELETE));
           return Future.succeededFuture();
         } else {
-          LOGGER.error(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Delete book", LogUtils.NO_BOOK_WITH_ID_MESSAGE.buildMessage(id)));
+          LOGGER.severe(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Delete book", LogUtils.NO_BOOK_WITH_ID_MESSAGE.buildMessage(id)));
           throw new NoSuchElementException(LogUtils.NO_BOOK_WITH_ID_MESSAGE.buildMessage(id));
         }
       });
@@ -143,6 +143,6 @@ public class BookRepository {
       .execute(Collections.emptyMap())
       .map(rowSet -> rowSet.iterator().next())
       .onSuccess(success -> LOGGER.info(LogUtils.REGULAR_CALL_SUCCESS_MESSAGE.buildMessage("Count books", SQL_COUNT)))
-      .onFailure(throwable -> LOGGER.error(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Count book", throwable.getMessage())));
+      .onFailure(throwable -> LOGGER.severe(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Count book", throwable.getMessage())));
   }
 }

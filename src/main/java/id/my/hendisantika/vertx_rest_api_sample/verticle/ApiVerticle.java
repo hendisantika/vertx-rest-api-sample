@@ -11,10 +11,10 @@ import id.my.hendisantika.vertx_rest_api_sample.util.LogUtils;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.core.Vertx;
-import io.vertx.core.impl.logging.Logger;
-import io.vertx.core.impl.logging.LoggerFactory;
 import io.vertx.ext.web.Router;
-import io.vertx.pgclient.PgPool;
+import io.vertx.sqlclient.Pool;
+
+import java.util.logging.Logger;
 
 /**
  * Created by IntelliJ IDEA.
@@ -28,11 +28,11 @@ import io.vertx.pgclient.PgPool;
  */
 public class ApiVerticle extends AbstractVerticle {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(ApiVerticle.class);
+  private static final Logger LOGGER = Logger.getLogger(ApiVerticle.class.getName());
 
   @Override
   public void start(Promise<Void> promise) {
-    final PgPool dbClient = DbUtils.buildDbClient(vertx);
+    final Pool dbClient = DbUtils.buildDbClient(vertx);
 
     final BookRepository bookRepository = new BookRepository();
     final BookService bookService = new BookService(dbClient, bookRepository);
@@ -53,7 +53,8 @@ public class ApiVerticle extends AbstractVerticle {
 
     vertx.createHttpServer()
       .requestHandler(router)
-      .listen(port, http -> {
+      .listen(port)
+      .onComplete(http -> {
         if (http.succeeded()) {
           promise.complete();
           LOGGER.info(LogUtils.RUN_HTTP_SERVER_SUCCESS_MESSAGE.buildMessage(port));

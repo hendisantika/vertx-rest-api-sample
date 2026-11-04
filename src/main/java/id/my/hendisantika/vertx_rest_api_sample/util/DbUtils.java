@@ -1,8 +1,9 @@
 package id.my.hendisantika.vertx_rest_api_sample.util;
 
 import io.vertx.core.Vertx;
+import io.vertx.pgclient.PgBuilder;
 import io.vertx.pgclient.PgConnectOptions;
-import io.vertx.pgclient.PgPool;
+import io.vertx.sqlclient.Pool;
 import io.vertx.sqlclient.PoolOptions;
 import org.flywaydb.core.api.configuration.Configuration;
 import org.flywaydb.core.api.configuration.FluentConfiguration;
@@ -29,7 +30,7 @@ public class DbUtils {
   private DbUtils() {
   }
 
-  public static PgPool buildDbClient(Vertx vertx) {
+  public static Pool buildDbClient(Vertx vertx) {
     final Properties properties = ConfigUtils.getInstance().getProperties();
 
     final PgConnectOptions connectOptions = new PgConnectOptions()
@@ -39,9 +40,13 @@ public class DbUtils {
       .setUser(properties.getProperty(USERNAME_CONFIG))
       .setPassword(properties.getProperty(PASSWORD_CONFIG));
 
-    final PoolOptions poolOptions = new PoolOptions().setMaxSize(ApplicationUtils.numberOfAvailableCores());
+    final PoolOptions poolOptions = new PoolOptions().setMaxSize(Math.max(1, ApplicationUtils.numberOfAvailableCores()));
 
-    return PgPool.pool(vertx, connectOptions, poolOptions);
+    return PgBuilder.pool()
+      .with(poolOptions)
+      .connectingTo(connectOptions)
+      .using(vertx)
+      .build();
   }
 
   public static Configuration buildMigrationsConfiguration() {

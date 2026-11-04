@@ -7,12 +7,12 @@ import id.my.hendisantika.vertx_rest_api_sample.api.repository.BookRepository;
 import id.my.hendisantika.vertx_rest_api_sample.util.LogUtils;
 import id.my.hendisantika.vertx_rest_api_sample.util.QueryUtils;
 import io.vertx.core.Future;
-import io.vertx.core.impl.logging.Logger;
-import io.vertx.core.impl.logging.LoggerFactory;
-import io.vertx.pgclient.PgPool;
+import io.vertx.sqlclient.Pool;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import java.util.logging.Logger;
 
 /**
  * Created by IntelliJ IDEA.
@@ -25,12 +25,12 @@ import java.util.stream.Collectors;
  * To change this template use File | Settings | File Templates.
  */
 public class BookService {
-  private static final Logger LOGGER = LoggerFactory.getLogger(BookService.class);
+  private static final Logger LOGGER = Logger.getLogger(BookService.class.getName());
 
-  private final PgPool dbClient;
+  private final Pool dbClient;
   private final BookRepository bookRepository;
 
-  public BookService(PgPool dbClient,
+  public BookService(Pool dbClient,
                      BookRepository bookRepository) {
     this.dbClient = dbClient;
     this.bookRepository = bookRepository;
@@ -56,7 +56,7 @@ public class BookService {
             );
         })
       .onSuccess(success -> LOGGER.info(LogUtils.REGULAR_CALL_SUCCESS_MESSAGE.buildMessage("Read all books", success.getBooks())))
-      .onFailure(throwable -> LOGGER.error(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Read all books", throwable.getMessage())));
+      .onFailure(throwable -> LOGGER.severe(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Read all books", throwable.getMessage())));
   }
 
   public Future<BookGetByIdResponse> readOne(int id) {
@@ -66,7 +66,7 @@ public class BookService {
             .map(BookGetByIdResponse::new);
         })
       .onSuccess(success -> LOGGER.info(LogUtils.REGULAR_CALL_SUCCESS_MESSAGE.buildMessage("Read one book", success)))
-      .onFailure(throwable -> LOGGER.error(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Read one book", throwable.getMessage())));
+      .onFailure(throwable -> LOGGER.severe(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Read one book", throwable.getMessage())));
   }
 
   public Future<BookGetByIdResponse> create(Book book) {
@@ -76,7 +76,7 @@ public class BookService {
             .map(BookGetByIdResponse::new);
         })
       .onSuccess(success -> LOGGER.info(LogUtils.REGULAR_CALL_SUCCESS_MESSAGE.buildMessage("Create one book", success)))
-      .onFailure(throwable -> LOGGER.error(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Create one book", throwable.getMessage())));
+      .onFailure(throwable -> LOGGER.severe(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Create one book", throwable.getMessage())));
   }
 
   public Future<BookGetByIdResponse> update(int id, Book book) {
@@ -88,7 +88,7 @@ public class BookService {
             .map(BookGetByIdResponse::new);
         })
       .onSuccess(success -> LOGGER.info(LogUtils.REGULAR_CALL_SUCCESS_MESSAGE.buildMessage("Update one book", success)))
-      .onFailure(throwable -> LOGGER.error(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Update one book", throwable.getMessage())));
+      .onFailure(throwable -> LOGGER.severe(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Update one book", throwable.getMessage())));
   }
 
   public Future<Void> delete(Integer id) {
@@ -97,6 +97,6 @@ public class BookService {
           return bookRepository.delete(connection, id);
         })
       .onSuccess(success -> LOGGER.info(LogUtils.REGULAR_CALL_SUCCESS_MESSAGE.buildMessage("Delete one book", id)))
-      .onFailure(throwable -> LOGGER.error(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Delete one book", throwable.getMessage())));
+      .onFailure(throwable -> LOGGER.severe(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Delete one book", throwable.getMessage())));
   }
 }

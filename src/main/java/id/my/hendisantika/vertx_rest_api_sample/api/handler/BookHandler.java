@@ -47,7 +47,7 @@ public class BookHandler {
   }
 
   public Future<BookGetByIdResponse> create(RoutingContext rc) {
-    final Book book = rc.getBodyAsJson().mapTo(Book.class);
+    final Book book = rc.body().asJsonObject().mapTo(Book.class);
 
     return bookService.create(book)
       .onSuccess(success -> ResponseUtils.buildCreatedResponse(rc, success))
@@ -56,7 +56,7 @@ public class BookHandler {
 
   public Future<BookGetByIdResponse> update(RoutingContext rc) {
     final String id = rc.pathParam(ID_PARAMETER);
-    final Book book = rc.getBodyAsJson().mapTo(Book.class);
+    final Book book = rc.body().asJsonObject().mapTo(Book.class);
 
     return bookService.update(Integer.parseInt(id), book)
       .onSuccess(success -> ResponseUtils.buildOkResponse(rc, success))

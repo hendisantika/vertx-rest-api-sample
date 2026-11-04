@@ -5,13 +5,14 @@ import id.my.hendisantika.vertx_rest_api_sample.util.LogUtils;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Future;
+import io.vertx.core.ThreadingModel;
 import io.vertx.core.Vertx;
-import io.vertx.core.impl.logging.Logger;
-import io.vertx.core.impl.logging.LoggerFactory;
+
+import java.util.logging.Logger;
 
 public class MainVerticle extends AbstractVerticle {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(MainVerticle.class);
+  private static final Logger LOGGER = Logger.getLogger(MainVerticle.class.getName());
 
   @Override
   public void start() {
@@ -20,12 +21,12 @@ public class MainVerticle extends AbstractVerticle {
     deployMigrationVerticle(vertx)
       .flatMap(migrationVerticleId -> deployApiVerticle(vertx))
       .onSuccess(success -> LOGGER.info(LogUtils.RUN_APP_SUCCESSFULLY_MESSAGE.buildMessage(System.currentTimeMillis() - start)))
-      .onFailure(throwable -> LOGGER.error(throwable.getMessage()));
+      .onFailure(throwable -> LOGGER.severe(throwable.getMessage()));
   }
 
   private Future<Void> deployMigrationVerticle(Vertx vertx) {
     final DeploymentOptions options = new DeploymentOptions()
-      .setWorker(true)
+      .setThreadingModel(ThreadingModel.WORKER)
       .setWorkerPoolName("migrations-worker-pool")
       .setInstances(1)
       .setWorkerPoolSize(1);
@@ -36,6 +37,6 @@ public class MainVerticle extends AbstractVerticle {
 
   private Future<String> deployApiVerticle(Vertx vertx) {
     return vertx.deployVerticle(ApiVerticle.class.getName(),
-      new DeploymentOptions().setInstances(ApplicationUtils.numberOfAvailableCores()));
+      new DeploymentOptions().setInstances(Math.max(1, ApplicationUtils.numberOfAvailableCores())));
   }
 }

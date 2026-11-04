@@ -22,7 +22,7 @@
     <vertx.version>5.2.2</vertx.version>
     <junit-jupiter.version>6.1.3</junit-jupiter.version>
     <lombok.version>1.18.48</lombok.version>
-    <java.version>23</java.version>
+    <java.version>25</java.version>
     <main.verticle>id.my.hendisantika.vertx_rest_api_sample.verticle.MainVerticle</main.verticle>
     <launcher.class>id.my.hendisantika.vertx_rest_api_sample.Main</launcher.class>
   </properties>
@@ -154,8 +154,7 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>${maven-compiler-plugin.version}</version>
         <configuration>
-          <source>${java.version}</source>
-          <target>${java.version}</target>
+          <release>${java.version}</release>
           <annotationProcessorPaths>
             <path>
               <groupId>org.projectlombok</groupId>

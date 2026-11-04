@@ -151,7 +151,8 @@ GitHub Actions ([`.github/workflows/maven.yml`](.github/workflows/maven.yml)) ru
 
 - **Build & Test** on JDK 25 (Temurin) with Maven caching
 - **Docker image build** to validate the `Dockerfile`
-- **Dependency graph submission** (push to `main` only) to improve Dependabot alerts
+- **Dependency graph submission** (push to `main` only) to improve Dependabot alerts — non-blocking,
+  requires *Settings → Code security → Dependency graph* to be enabled
 
 ## Dependency Updates
 

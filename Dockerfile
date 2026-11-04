@@ -1,15 +1,16 @@
 # syntax=docker/dockerfile:1
 
 # ---------- Build stage ----------
-FROM maven:3.9-eclipse-temurin-26 AS build
+FROM eclipse-temurin:25-jdk-alpine AS build
 WORKDIR /workspace
 
-# Cache dependencies first
-COPY pom.xml .
-RUN mvn -B -q dependency:go-offline
+# Cache Maven wrapper & dependencies first
+COPY mvnw pom.xml ./
+COPY .mvn ./.mvn
+RUN chmod +x mvnw && ./mvnw -B -q dependency:go-offline
 
 COPY src ./src
-RUN mvn -B -q package -DskipTests
+RUN ./mvnw -B -q package -DskipTests
 
 # ---------- Runtime stage ----------
 FROM eclipse-temurin:25-jre-alpine

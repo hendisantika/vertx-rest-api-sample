@@ -134,8 +134,8 @@ Errors are returned as JSON, e.g. `404` → `{"error": "No book with id 1"}`.
 
 ## Docker
 
-The `Dockerfile` is a multi-stage build: it compiles the project with `maven:3.9-eclipse-temurin-25`
-and runs the fat jar on `eclipse-temurin:25-jre-alpine` as a non-root user.
+The `Dockerfile` is a multi-stage build: it compiles the project with the Maven wrapper on
+`eclipse-temurin:25-jdk-alpine` and runs the fat jar on `eclipse-temurin:25-jre-alpine` as a non-root user.
 
 ```shell
 docker build -t vertx-rest-api-sample .
@@ -163,7 +163,7 @@ GitHub Actions ([`.github/workflows/maven.yml`](.github/workflows/maven.yml)) ru
 | Maven           | Daily, 05:00 Asia/Jakarta   | Minor/patch updates grouped (Vert.x, Jackson, database, Netty, test, Maven plugins, others); majors arrive as separate PRs |
 | GitHub Actions  | Weekly (Monday)             | All actions grouped |
 | Docker          | Weekly (Monday)             | Stays on the JDK 25 LTS line |
-| Docker Compose  | Weekly (Monday)             | PostgreSQL image updates |
+| Docker Compose  | Weekly (Monday)             | PostgreSQL minor/patch updates (majors need a data migration) |
 
 ## Help
 

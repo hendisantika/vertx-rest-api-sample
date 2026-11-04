@@ -112,10 +112,9 @@ updates:
       prefix: "build(docker)"
       include: scope
     ignore:
-      # Keep the build/runtime images on the JDK 25 LTS line
+      # Keep both build & runtime images on the JDK 25 LTS line
+      # (e.g. 25-jdk-alpine -> 26-jdk-alpine is ignored)
       - dependency-name: "eclipse-temurin"
-        update-types: [ "version-update:semver-major" ]
-      - dependency-name: "maven"
         update-types: [ "version-update:semver-major" ]
 
   # ---------------------------------------------------------------------------
@@ -135,3 +134,7 @@ updates:
     commit-message:
       prefix: "build(compose)"
       include: scope
+    ignore:
+      # PostgreSQL majors require a data migration (pg_upgrade / dump & restore)
+      - dependency-name: "postgres"
+        update-types: [ "version-update:semver-major" ]

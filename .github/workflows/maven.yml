@@ -68,4 +68,4 @@ jobs:
       # Non-blocking: requires "Dependency graph" to be enabled in the repository settings.
       - name: Update dependency graph
         continue-on-error: true
-        uses:advanced-security/maven-dependency-submission-action@a64327a7329c9939cf675e458452febe1894a70c
+        uses: advanced-security/maven-dependency-submission-action@a64327a7329c9939cf675e458452febe1894a70c

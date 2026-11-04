@@ -3,7 +3,7 @@
 [![Java CI with Maven](https://github.com/hendisantika/vertx-rest-api-sample/actions/workflows/maven.yml/badge.svg)](https://github.com/hendisantika/vertx-rest-api-sample/actions/workflows/maven.yml)
 ![Java](https://img.shields.io/badge/Java-25-orange?logo=openjdk)
 [![Vert.x](https://img.shields.io/badge/vert.x-5.2.2-purple.svg)](https://vertx.io)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-17-336791?logo=postgresql&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-18-336791?logo=postgresql&logoColor=white)
 [![Dependabot](https://img.shields.io/badge/Dependabot-enabled-025E8C?logo=dependabot)](.github/dependabot.yml)
 
 A reactive CRUD REST API for **books**, built with [Eclipse Vert.x 5](https://vertx.io) on **JDK 25**,
@@ -17,7 +17,7 @@ backed by PostgreSQL and versioned with Flyway migrations.
 | Eclipse Vert.x   | 5.2.2    |
 | Reactive PG client / SQL templates | Vert.x 5.2.2 |
 | Flyway           | 13.12.0  |
-| PostgreSQL       | 17       |
+| PostgreSQL       | 18       |
 | Jackson (BOM)    | 2.22.4   |
 | Lombok           | 1.18.48  |
 | JUnit Jupiter    | 6.1.3    |

@@ -1,13 +1,137 @@
+# Dependabot configuration
+# Docs: https://docs.github.com/en/code-security/dependabot/working-with-dependabot/dependabot-options-reference
 version: 2
 updates:
+  # ---------------------------------------------------------------------------
+  # Maven (pom.xml)
+  # ---------------------------------------------------------------------------
   - package-ecosystem: maven
     directory: "/"
     schedule:
       interval: daily
-      time: '05:00'
+      time: "05:00"
       timezone: Asia/Jakarta
     open-pull-requests-limit: 10
-  - package-ecosystem: "github-actions"
+    target-branch: main
+    labels:
+      - dependencies
+      - java
+    commit-message:
+      prefix: "build(deps)"
+      prefix-development: "build(deps-dev)"
+      include: scope
+    # Minor & patch updates are grouped to reduce PR noise.
+    # Major updates still arrive as individual PRs so breaking changes
+    # (e.g. Vert.x 4 -> 5) can be reviewed and migrated separately.
+    groups:
+      vertx:
+        patterns:
+          - "io.vertx:*"
+        update-types: [ minor, patch ]
+      jackson:
+        patterns:
+          - "com.fasterxml.jackson:*"
+          - "com.fasterxml.jackson.core:*"
+        update-types: [ minor, patch ]
+      database:
+        patterns:
+          - "org.flywaydb:*"
+          - "org.postgresql:*"
+        update-types: [ minor, patch ]
+      netty:
+        patterns:
+          - "io.netty:*"
+        update-types: [ minor, patch ]
+      test:
+        patterns:
+          - "org.junit*"
+          - "org.junit.jupiter:*"
+        update-types: [ minor, patch ]
+      maven-plugins:
+        patterns:
+          - "org.apache.maven.plugins:*"
+          - "org.codehaus.mojo:*"
+          - "org.jacoco:*"
+        update-types: [ minor, patch ]
+      others:
+        patterns:
+          - "*"
+        exclude-patterns:
+          - "io.vertx:*"
+          - "com.fasterxml.jackson*"
+          - "org.flywaydb:*"
+          - "org.postgresql:*"
+          - "io.netty:*"
+          - "org.junit*"
+          - "org.apache.maven.plugins:*"
+          - "org.codehaus.mojo:*"
+          - "org.jacoco:*"
+        update-types: [ minor, patch ]
+    ignore:
+      # Jackson 3.x moved to the `tools.jackson` groupId; stay on 2.x via jackson-bom
+      - dependency-name: "com.fasterxml.jackson*"
+        update-types: [ "version-update:semver-major" ]
+
+  # ---------------------------------------------------------------------------
+  # GitHub Actions (.github/workflows)
+  # ---------------------------------------------------------------------------
+  - package-ecosystem: github-actions
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: weekly
+      day: monday
+      time: "05:00"
+      timezone: Asia/Jakarta
+    open-pull-requests-limit: 5
+    labels:
+      - dependencies
+      - github_actions
+    commit-message:
+      prefix: "ci(deps)"
+      include: scope
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+
+  # ---------------------------------------------------------------------------
+  # Docker (Dockerfile base images)
+  # ---------------------------------------------------------------------------
+  - package-ecosystem: docker
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: monday
+      time: "05:00"
+      timezone: Asia/Jakarta
+    open-pull-requests-limit: 5
+    labels:
+      - dependencies
+      - docker
+    commit-message:
+      prefix: "build(docker)"
+      include: scope
+    ignore:
+      # Keep the build/runtime images on the JDK 25 LTS line
+      - dependency-name: "eclipse-temurin"
+        update-types: [ "version-update:semver-major" ]
+      - dependency-name: "maven"
+        update-types: [ "version-update:semver-major" ]
+
+  # ---------------------------------------------------------------------------
+  # Docker Compose (compose.yml service images)
+  # ---------------------------------------------------------------------------
+  - package-ecosystem: docker-compose
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: monday
+      time: "05:00"
+      timezone: Asia/Jakarta
+    open-pull-requests-limit: 5
+    labels:
+      - dependencies
+      - docker
+    commit-message:
+      prefix: "build(compose)"
+      include: scope
